@@ -8,7 +8,7 @@ import * as mongoose from 'mongoose';
 import { expressMiddleware } from '@apollo/server/express4';
 import { BaseContext } from '@apollo/server/src/externalTypes';
 import { createServer } from './graphql/server';
-import path from "path";
+import * as path from "path";
 
 (async () => {
   const app = express();
