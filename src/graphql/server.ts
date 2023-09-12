@@ -10,7 +10,7 @@ import { getParamsFromToken } from '../utils/helpers';
 import { AccountJWTParams } from './account';
 import { UserDocument, UserModel } from '../models/User';
 import { addOnlineUser } from './onlineUsers';
-import { ExpressMiddlewareOptions } from '@apollo/server/src/express4';
+import express from 'express';
 import { ApolloContext } from '../types';
 
 export const AUTHENTICATION_TYPE = 'Bearer';
@@ -18,8 +18,8 @@ const regexpForRemoveAuthenticationType = new RegExp(`^${AUTHENTICATION_TYPE}\\s
 export const getToken = (authentication: string): string =>
   authentication?.replace(regexpForRemoveAuthenticationType, '');
 
-export const options: ExpressMiddlewareOptions<ApolloContext> = {
-  context: async ({ req }) => {
+export const options = {
+  context: async ({ req }: { req: express.Request }): Promise<ApolloContext> => {
     const { authorization } = (req.headers || {}) as { authorization: string; locale: string };
     const token = getToken(authorization);
     if (!token) return { token: null, user: null };

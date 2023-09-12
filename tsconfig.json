@@ -13,5 +13,6 @@
     "lib": [ "ES2015" ],
     "outDir": "build"
   },
-  "files": ["src/app.ts"]
+  "files": ["src/app.ts"],
+  "exclude": ["node_modules"]
 }
