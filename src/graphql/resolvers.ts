@@ -12,6 +12,7 @@ import { addMedicine } from './resolvers/addMedicine';
 import { updateAnimal } from './resolvers/updateAnimal';
 import { updateMedicine } from './resolvers/updateMedicine';
 import { updateDisease } from './resolvers/updateDisease';
+import { pubsub, pubsubKeys } from './pubsub';
 
 export const resolvers = {
   Date: DateScalar,
@@ -35,6 +36,20 @@ export const resolvers = {
     updateAnimal,
     updateDisease,
     updateMedicine,
+  },
+  Subscription: {
+    updatedAnimal: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.updatedAnimal]),
+    },
+    updatedUser: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.updatedUser]),
+    },
+    updatedMedicine: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.updatedMedicine]),
+    },
+    updatedDisease: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.updatedDisease]),
+    },
   },
   Query: {
     animals,

@@ -3,6 +3,7 @@ import { Document, Model } from 'mongoose';
 import { generateHash, isValidCode, isValidEmail, isValidNickname } from './helpers';
 import { ResetPassword } from './ResetPassword';
 import { Profile } from '../../graphql.types';
+import { pubsub, pubsubKeys } from '../../graphql/pubsub';
 
 export type ResetPassword = {
   code: string;
@@ -70,5 +71,7 @@ const methods: UserMethods = {
 };
 
 Object.assign(UserSchema.methods, methods);
+
+UserSchema.post('save', (doc) => pubsub.publish(pubsubKeys.updatedUser, doc));
 
 export const UserModel = mongoose.model('User', UserSchema);
