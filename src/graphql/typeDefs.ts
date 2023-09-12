@@ -14,8 +14,90 @@ export const typeDefs = `#graphql
     signUpDate: Date!
   }
 
-  type Query {
-    profile: Profile
+  enum AnimalType {
+    cat
+    dog
+    bird
+  }
+
+  enum DiseaseType {
+    cold
+    broken
+    parasites
+    stomach
+  }
+
+  input DiseaseInput { 
+    type: DiseaseType!
+    name: String!
+    desc: String!
+  }
+
+  type Disease { 
+    id: ID!
+    type: DiseaseType!
+    name: String!
+    desc: String!
+  }
+
+  input MedicineInput {
+    name: String!
+    heal: [DiseaseType!]!
+  }
+
+  type Medicine {
+    id: ID!
+    name: String!
+    heal: [DiseaseType!]!
+  }
+
+  type Cat {
+    id: ID!
+    name: String
+    comment: String
+    age: String
+    doctor: User!
+    disease: [Disease]!
+    updatedAt: Date
+  }
+
+  type Dog {
+    id: ID!
+    name: String
+    comment: String
+    age: String
+    doctor: User!
+    disease: [Disease]!
+    updatedAt: Date
+  }
+
+  type Bird {
+    id: ID!
+    name: String
+    comment: String
+    age: String
+    doctor: User!
+    disease: [Disease]!
+    updatedAt: Date
+  }
+
+  union Animal = Bird | Dog | Cat
+
+  input AddAnimalInput {
+    doctorId: ID
+    diseaseIds: [ID!]
+    name: String
+    comment: String
+    age: String
+  }
+
+  input UpdateAnimalInput {
+    id: ID!
+    doctorId: ID
+    diseaseIds: [ID!]
+    name: String
+    comment: String
+    age: String
   }
 
   input ChangePasswordInput {
@@ -46,7 +128,20 @@ export const typeDefs = `#graphql
     password: ProfilePasswordMutations
   }
 
+  type Query {
+    profile: Profile
+    animals: [Animal!]!
+    users: [User!]!
+  }
+
+  type Subscription {
+    updatedAnimal: Animal!
+    updatedUser: User!
+  }
+
   type Mutation {
     profile: ProfileMutations
+    addAnimal(input: AddAnimalInput): Animal!
+    updateAnimal(input: UpdateAnimalInput): Animal!
   }
 `;
