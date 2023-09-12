@@ -50,15 +50,18 @@ export const createServer = async (httpServer: http.Server, port: number) => {
 
   const { url } = await startStandaloneServer(server, {
     context: async ({ req }) => {
+      const { authorization } = (req.headers || {}) as { authorization: string; locale: string };
+      const token = getToken(authorization);
+      console.log({ token });
+      if (!token) return { token: null, user: null };
       try {
-        const { authorization } = (req.headers || {}) as { authorization: string; locale: string };
-        const token = getToken(authorization);
         const res = await getParamsFromToken<AccountJWTParams>(token);
         const id = res.id;
         const user = (await UserModel.findById(id)) as UserDocument;
+        console.log({ id, user });
         addOnlineUser(user);
         return { token, user };
-      } catch {
+      } catch (e) {
         return { token: null, user: null };
       }
     },

@@ -156,7 +156,7 @@ export type Profile = {
   __typename?: 'Profile';
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   signUpDate: Scalars['Date']['output'];
 };
 
@@ -224,6 +224,6 @@ export type UpdateProfileInput = {
 export type User = {
   __typename?: 'User';
   id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   signUpDate: Scalars['Date']['output'];
 };

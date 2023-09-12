@@ -3,13 +3,13 @@ export const typeDefs = `#graphql
 
   type User {
     id: ID!
-    name: String!
+    name: String
     signUpDate: Date!
   }
 
   type Profile {
     id: ID!
-    name: String!
+    name: String
     email: String!
     signUpDate: Date!
   }
