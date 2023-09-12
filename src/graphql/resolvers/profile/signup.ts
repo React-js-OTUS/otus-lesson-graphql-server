@@ -1,10 +1,10 @@
-import { Messages, ResolverWithoutParent } from '../../../../types';
+import { Messages, ApolloResolver } from '../../../../types';
 import { ProfileMutations, ProfileMutationsSignupArgs } from '../../../graphql.types';
 import { UserDocument, UserModel } from '../../../models/User';
 import { getTokenByParams } from '../../../utils/helpers';
 import { GraphQLError } from 'graphql/index';
 
-export const signup: ResolverWithoutParent<ProfileMutationsSignupArgs, ProfileMutations['signup'] | Error> = async (
+export const signup: ApolloResolver<never, ProfileMutations['signup'] | Error, ProfileMutationsSignupArgs> = async (
   _,
   args
 ) => {

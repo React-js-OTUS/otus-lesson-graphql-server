@@ -1,10 +1,10 @@
-import { CustomError, ResolverWithoutParent } from '../../../../types';
+import { CustomError, ApolloResolver } from '../../../../types';
 import { getTokenByParams } from '../../../utils/helpers';
 import { DataBaseError, InvalidPasswordError, SamePasswordsError } from '../../../Errors';
 import { getUserByContext, isValidPassword } from '../helpers';
 import { UserDocument } from '../User';
 
-export const changePassword: ResolverWithoutParent<{ password: string; newPassword: string }> = async (
+export const changePassword: ApolloResolver<{ password: string; newPassword: string }> = async (
   _,
   { password, newPassword },
   context

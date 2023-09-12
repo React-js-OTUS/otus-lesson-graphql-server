@@ -1,11 +1,11 @@
-import { Messages, ResolverWithoutParent } from '../../../../../types';
+import { Messages, ApolloResolver } from '../../../../../types';
 import { ProfilePasswordMutationsChangeArgs } from '../../../../graphql.types';
 import { isValidPassword } from '../../../../models/User/helpers';
 import { ResetPassword } from '../../../../graphql.types';
 import { GraphQLError } from 'graphql/index';
 import { withAuth } from '../../../auth';
 
-export const changeRaw: ResolverWithoutParent<ProfilePasswordMutationsChangeArgs, ResetPassword | Error> = async (
+export const changeRaw: ApolloResolver<never, ResetPassword | Error, ProfilePasswordMutationsChangeArgs> = async (
   _,
   { input },
   { user }

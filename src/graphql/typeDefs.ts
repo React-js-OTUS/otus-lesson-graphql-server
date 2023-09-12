@@ -15,9 +15,9 @@ export const typeDefs = `#graphql
   }
 
   enum AnimalType {
-    cat
-    dog
-    bird
+    Cat
+    Dog
+    Bird
   }
 
   enum DiseaseType {
@@ -57,7 +57,7 @@ export const typeDefs = `#graphql
     comment: String
     age: Int
     doctor: User
-    disease: [Disease]!
+    diseases: [Disease]!
     updatedAt: Date
   }
 
@@ -67,7 +67,7 @@ export const typeDefs = `#graphql
     comment: String
     age: Int
     doctor: User
-    disease: [Disease]!
+    diseases: [Disease]!
     updatedAt: Date
   }
 
@@ -77,7 +77,7 @@ export const typeDefs = `#graphql
     comment: String
     age: Int
     doctor: User
-    disease: [Disease]!
+    diseases: [Disease]!
     updatedAt: Date
   }
 

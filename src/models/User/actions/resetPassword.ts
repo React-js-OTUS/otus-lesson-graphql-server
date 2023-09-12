@@ -1,4 +1,4 @@
-import { AccountResponseRaw, CustomError, ResolverWithoutParent } from '../../../../types';
+import { AccountResponseRaw, CustomError, ApolloResolver } from '../../../../types';
 import { getTokenByParams } from '../../../utils/helpers';
 import { DataBaseError, InvalidPasswordError, InvalidResetPasswordError } from '../../../Errors';
 import {
@@ -11,7 +11,7 @@ import {
 } from '../helpers';
 import { UserDocument } from '../User';
 
-export const getCode: ResolverWithoutParent<never, { code: string } & AccountResponseRaw> = async (_, __, context) => {
+export const getCode: ApolloResolver<never, { code: string } & AccountResponseRaw> = async (_, __, context) => {
   const { type, value } = await getUserByContext(context);
   if (type === 'error') return value as CustomError;
   const user = value as UserDocument;
@@ -31,7 +31,7 @@ export const getCode: ResolverWithoutParent<never, { code: string } & AccountRes
   return { code, token: context.token, user } as any;
 };
 
-export const resetPassword: ResolverWithoutParent<{ code: string; newPassword: string }> = async (
+export const resetPassword: ApolloResolver<{ code: string; newPassword: string }> = async (
   _,
   { code, newPassword },
   context

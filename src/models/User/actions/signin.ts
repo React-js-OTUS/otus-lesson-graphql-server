@@ -1,9 +1,9 @@
-import { AccountResponse, ResolverWithoutParent } from '../../../../types';
+import { AccountResponse, ApolloResolver } from '../../../../types';
 import { UserDocument, UserModel } from '../User';
 import { IncorrectPasswordOrEmailError } from '../../../Errors';
 import { getTokenByParams } from '../../../utils/helpers';
 
-export const signin: ResolverWithoutParent<{ password: string; email: string }> = async (_, args) => {
+export const signin: ApolloResolver<{ password: string; email: string }> = async (_, args) => {
   const { password, email } = args;
   let user: UserDocument;
   try {

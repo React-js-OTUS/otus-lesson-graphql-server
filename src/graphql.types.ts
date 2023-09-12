@@ -18,17 +18,18 @@ export type Scalars = {
 export type Animal = Bird | Cat | Dog;
 
 export type AnimalInput = {
-  age?: InputMaybe<Scalars['String']['input']>;
+  age?: InputMaybe<Scalars['Int']['input']>;
   comment?: InputMaybe<Scalars['String']['input']>;
   diseaseIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   doctorId?: InputMaybe<Scalars['ID']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  type: AnimalType;
 };
 
 export enum AnimalType {
-  Bird = 'bird',
-  Cat = 'cat',
-  Dog = 'dog'
+  Bird = 'Bird',
+  Cat = 'Cat',
+  Dog = 'Dog'
 }
 
 export type AuthResult = {
@@ -38,23 +39,23 @@ export type AuthResult = {
 
 export type Bird = {
   __typename?: 'Bird';
-  age?: Maybe<Scalars['String']['output']>;
+  age?: Maybe<Scalars['Int']['output']>;
   comment?: Maybe<Scalars['String']['output']>;
-  disease: Array<Maybe<Disease>>;
-  doctor: User;
+  diseases: Array<Maybe<Disease>>;
+  doctor?: Maybe<User>;
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['Date']['output']>;
 };
 
 export type Cat = {
   __typename?: 'Cat';
-  age?: Maybe<Scalars['String']['output']>;
+  age?: Maybe<Scalars['Int']['output']>;
   comment?: Maybe<Scalars['String']['output']>;
-  disease: Array<Maybe<Disease>>;
-  doctor: User;
+  diseases: Array<Maybe<Disease>>;
+  doctor?: Maybe<User>;
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['Date']['output']>;
 };
 
@@ -86,12 +87,12 @@ export enum DiseaseType {
 
 export type Dog = {
   __typename?: 'Dog';
-  age?: Maybe<Scalars['String']['output']>;
+  age?: Maybe<Scalars['Int']['output']>;
   comment?: Maybe<Scalars['String']['output']>;
-  disease: Array<Maybe<Disease>>;
-  doctor: User;
+  diseases: Array<Maybe<Disease>>;
+  doctor?: Maybe<User>;
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['Date']['output']>;
 };
 
@@ -217,7 +218,7 @@ export type Subscription = {
 };
 
 export type UpdateProfileInput = {
-  name?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
 };
 
 export type User = {

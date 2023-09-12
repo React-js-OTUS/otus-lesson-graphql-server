@@ -1,4 +1,4 @@
-import { ResolverWithoutParent } from '../../../../types';
+import { ApolloResolver } from '../../../../types';
 import { UserDocument, UserModel } from '../User';
 import { AccountAlreadyExistError, ApolloError, DataBaseError, InvalidPasswordError } from '../../../Errors';
 import { getTokenByParams } from '../../../utils/helpers';
@@ -28,7 +28,7 @@ export const nameIsExist = async (name: string): Promise<null | ApolloError> => 
   }
 };
 
-export const signup: ResolverWithoutParent<{ password: string; email: string; name: string }> = async (
+export const signup: ApolloResolver<{ password: string; email: string; name: string }> = async (
   _,
   { password, email, name }
 ) => {

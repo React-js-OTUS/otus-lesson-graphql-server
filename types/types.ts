@@ -33,8 +33,8 @@ export type ApolloContext = {
   user: Profile & UserDocument;
 };
 
-export type ResolverWithoutParent<Args extends Record<string, unknown>, Res = AccountResponse> = (
-  parent: undefined,
+export type ApolloResolver<T, Res = AccountResponse, Args extends Record<string, unknown> = Record<string, unknown>> = (
+  doc: T,
   args: Args,
   context: ApolloContext
 ) => Promise<Res>;

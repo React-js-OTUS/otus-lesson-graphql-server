@@ -1,10 +1,10 @@
-import { CustomError, ResolverWithoutParent } from '../../../../types';
+import { CustomError, ApolloResolver } from '../../../../types';
 import { UserClient, UserDocument } from '../User';
 import { getUserByContext } from '../helpers';
 import { DataBaseError } from '../../../Errors';
 import { nameIsExist } from './signup';
 
-export const update: ResolverWithoutParent<UserClient> = async (_, data, context) => {
+export const update: ApolloResolver<UserClient> = async (_, data, context) => {
   const { type, value } = await getUserByContext(context);
   if (type === 'error') return value as CustomError;
   const user = value as UserDocument;
