@@ -7,7 +7,7 @@ import config from './db.config';
 import * as mongoose from 'mongoose';
 import { expressMiddleware } from '@apollo/server/express4';
 import { BaseContext } from '@apollo/server/src/externalTypes';
-import { createServer } from './graphql/server';
+import { createServer, options } from './graphql/server';
 import * as path from 'path';
 
 (async () => {
@@ -21,15 +21,20 @@ import * as path from 'path';
 
   const port = parseInt(process.env.PORT) || 4002;
 
-  const { server, url } = await createServer(httpServer, port);
+  const { server } = await createServer(httpServer);
 
   app.use(passport.initialize());
   app.use(express.urlencoded({ extended: true }));
-  app.use('/graphql', cors(), express.json(), expressMiddleware(server as unknown as ApolloServer<BaseContext>));
+  app.use(
+    '/graphql',
+    cors(),
+    express.json(),
+    expressMiddleware(server as unknown as ApolloServer<BaseContext>, options)
+  );
 
   const root = path.join(process.cwd(), 'dist');
   app.use(express.static(root));
   app.get('*', (_, res) => res.sendFile('index.html', { root }));
 
-  httpServer.listen(() => console.log(`🚀 Server ready at ${url}`));
+  httpServer.listen(port, () => console.log(`🚀 Server ready at http://localhost:${port}`));
 })();
