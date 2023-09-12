@@ -3,6 +3,9 @@ import { ProfileMutations, ProfilePasswordMutations, profile } from './resolvers
 import { users } from './resolvers/users';
 import { Animal } from './resolvers/Animal';
 import { AnimalDocument } from '../models/Animal';
+import { animals } from './resolvers/animals';
+import { diseases } from './resolvers/diseases';
+import { medicines } from './resolvers/medicines';
 
 export const resolvers = {
   Date: DateScalar,
@@ -22,6 +25,9 @@ export const resolvers = {
     profile: () => ({}),
   },
   Query: {
+    animals,
+    diseases,
+    medicines,
     profile,
     users,
   },
