@@ -3,8 +3,9 @@ import { ProfilePasswordMutationsChangeArgs } from '../../../../graphql.types';
 import { isValidPassword } from '../../../../models/User/helpers';
 import { ResetPassword } from '../../../../graphql.types';
 import { GraphQLError } from 'graphql/index';
+import { withAuth } from '../../../auth';
 
-export const change: ResolverWithoutParent<ProfilePasswordMutationsChangeArgs, ResetPassword | Error> = async (
+export const changeRaw: ResolverWithoutParent<ProfilePasswordMutationsChangeArgs, ResetPassword | Error> = async (
   _,
   { input },
   { user }
@@ -43,3 +44,5 @@ export const change: ResolverWithoutParent<ProfilePasswordMutationsChangeArgs, R
     success: true,
   };
 };
+
+export const change = withAuth(changeRaw);

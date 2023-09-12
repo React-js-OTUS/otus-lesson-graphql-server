@@ -2,8 +2,9 @@ import { Messages, ResolverWithoutParent } from '../../../../types';
 import { ProfileMutations, ProfileMutationsUpdateArgs } from '../../../graphql.types';
 import { prepareProfile } from '../../../models/helpers/prepareProfile';
 import { GraphQLError } from 'graphql/index';
+import { withAuth } from '../../auth';
 
-export const update: ResolverWithoutParent<
+export const updateRaw: ResolverWithoutParent<
   ProfileMutationsUpdateArgs,
   ProfileMutations['update'] | GraphQLError
 > = async (_, { input }, { user }) => {
@@ -33,3 +34,5 @@ export const update: ResolverWithoutParent<
     });
   }
 };
+
+export const update = withAuth(updateRaw);

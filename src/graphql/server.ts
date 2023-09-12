@@ -11,6 +11,8 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import { getParamsFromToken } from '../utils/helpers';
 import { AccountJWTParams } from './account';
 import { UserDocument, UserModel } from '../models/User';
+import { Messages } from '../../types';
+import { addOnlineUser } from './onlineUsers';
 
 export const AUTHENTICATION_TYPE = 'Bearer';
 const regexpForRemoveAuthenticationType = new RegExp(`^${AUTHENTICATION_TYPE}\\s`);
@@ -56,22 +58,10 @@ export const createServer = async (httpServer: http.Server, port: number) => {
         const res = await getParamsFromToken<AccountJWTParams>(token);
         const id = res.id;
         const user = (await UserModel.findById(id)) as UserDocument;
-        if (!user) {
-          throw new GraphQLError('User is not authenticated', {
-            extensions: {
-              code: 'ERR_JWT_ERROR',
-              http: { status: 401 },
-            },
-          });
-        }
+        addOnlineUser(user);
         return { token, user };
-      } catch (e) {
-        throw new GraphQLError(e.message, {
-          extensions: {
-            code: 'ERR_JWT_ERROR',
-            http: { status: 401 },
-          },
-        });
+      } catch {
+        return { token: null, user: null };
       }
     },
     listen: {

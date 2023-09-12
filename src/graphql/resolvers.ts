@@ -1,5 +1,6 @@
 import { DateScalar } from './scalars/DateScalar';
 import { ProfileMutations, ProfilePasswordMutations, profile } from './resolvers/profile';
+import { users } from './resolvers/users';
 
 export const resolvers = {
   Date: DateScalar,
@@ -12,5 +13,6 @@ export const resolvers = {
   },
   Query: {
     profile,
+    users,
   },
 };
