@@ -53,30 +53,30 @@ export const typeDefs = `#graphql
 
   type Cat {
     id: ID!
-    name: String
+    name: String!
     comment: String
-    age: String
-    doctor: User!
+    age: Int
+    doctor: User
     disease: [Disease]!
     updatedAt: Date
   }
 
   type Dog {
     id: ID!
-    name: String
+    name: String!
     comment: String
-    age: String
-    doctor: User!
+    age: Int
+    doctor: User
     disease: [Disease]!
     updatedAt: Date
   }
 
   type Bird {
     id: ID!
-    name: String
+    name: String!
     comment: String
-    age: String
-    doctor: User!
+    age: Int
+    doctor: User
     disease: [Disease]!
     updatedAt: Date
   }
@@ -86,9 +86,10 @@ export const typeDefs = `#graphql
   input AnimalInput {
     doctorId: ID
     diseaseIds: [ID!]
-    name: String
+    name: String!
     comment: String
-    age: String
+    age: Int
+    type: AnimalType!
   }
 
   input ChangePasswordInput {
@@ -97,7 +98,7 @@ export const typeDefs = `#graphql
   }
 
   input UpdateProfileInput {
-    name: String
+    name: String!
   }
 
   type AuthResult {
