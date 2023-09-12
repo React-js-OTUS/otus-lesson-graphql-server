@@ -1,7 +1,6 @@
 import { ApolloServer } from '@apollo/server';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
-import { GraphQLError } from 'graphql';
 import * as http from 'http';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -11,7 +10,6 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import { getParamsFromToken } from '../utils/helpers';
 import { AccountJWTParams } from './account';
 import { UserDocument, UserModel } from '../models/User';
-import { Messages } from '../../types';
 import { addOnlineUser } from './onlineUsers';
 
 export const AUTHENTICATION_TYPE = 'Bearer';
