@@ -9,9 +9,10 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import { getParamsFromToken } from '../utils/helpers';
 import { AccountJWTParams } from './account';
 import { UserDocument, UserModel } from '../models/User';
-import { addOnlineUser } from './onlineUsers';
+import { addOnlineUser, removeOnlineUser } from './onlineUsers';
 import express from 'express';
-import { ApolloContext } from '../types';
+import { ApolloContext, Messages } from '../types';
+import { GraphQLError } from 'graphql';
 
 export const AUTHENTICATION_TYPE = 'Bearer';
 const regexpForRemoveAuthenticationType = new RegExp(`^${AUTHENTICATION_TYPE}\\s`);
@@ -27,7 +28,6 @@ export const options = {
       const res = await getParamsFromToken<AccountJWTParams>(token);
       const id = res.id;
       const user = (await UserModel.findById(id)) as UserDocument;
-      addOnlineUser(user);
       return { token, user };
     } catch (e) {
       return { token: null, user: null };
@@ -42,7 +42,37 @@ export const createServer = async (httpServer: http.Server) => {
     server: httpServer,
     path: '/subscriptions',
   });
-  const serverCleanup = useServer({ schema }, wsServer);
+  const serverCleanup = useServer(
+    {
+      schema,
+      onConnect: async (ctx) => {
+        const { authorization } = ctx.connectionParams;
+        const token = getToken(authorization as string);
+        if (!token) {
+          throw new GraphQLError('token is required', {
+            extensions: {
+              code: Messages.JWT_ERROR,
+              http: { status: 401 },
+            },
+          });
+        }
+        const res = await getParamsFromToken<AccountJWTParams>(token);
+        const id = res.id;
+        const user = (await UserModel.findById(id)) as UserDocument;
+        addOnlineUser(user);
+      },
+      onDisconnect: async (ctx) => {
+        const { authorization } = ctx.connectionParams;
+        const token = getToken(authorization as string);
+        if (!token) return;
+        const res = await getParamsFromToken<AccountJWTParams>(token);
+        const id = res.id;
+        const user = (await UserModel.findById(id)) as UserDocument;
+        removeOnlineUser(user);
+      },
+    },
+    wsServer
+  );
 
   const server = new ApolloServer({
     schema,

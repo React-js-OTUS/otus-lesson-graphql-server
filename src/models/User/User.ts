@@ -5,6 +5,7 @@ import { ResetPassword } from './ResetPassword';
 import { Profile } from '../../graphql.types';
 import { pubsub, pubsubKeys } from '../../graphql/pubsub';
 import { prepareUser } from '../helpers/prepareUser';
+import { addOnlineUser } from '../../graphql/onlineUsers';
 
 export type ResetPassword = {
   code: string;
@@ -74,6 +75,7 @@ const methods: UserMethods = {
 Object.assign(UserSchema.methods, methods);
 
 UserSchema.post('save', (doc) => {
+  addOnlineUser(doc);
   pubsub.publish(pubsubKeys.updatedUser, { updatedUser: prepareUser(doc) });
 });
 
