@@ -1,4 +1,4 @@
-import { ApolloResolver } from '../../../../types';
+import { ApolloResolver } from '../../../types';
 import { UserDocument, UserModel } from '../User';
 import { AccountAlreadyExistError, ApolloError, DataBaseError, InvalidPasswordError } from '../../../Errors';
 import { getTokenByParams } from '../../../utils/helpers';

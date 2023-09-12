@@ -1,4 +1,4 @@
-import { ApolloResolver } from '../../../types';
+import { ApolloResolver } from '../../types';
 import { withAuth } from '../auth';
 import { MedicineDocument, MedicineModel } from '../../models/Medicine';
 import { MutationUpdateMedicineArgs } from '../../graphql.types';

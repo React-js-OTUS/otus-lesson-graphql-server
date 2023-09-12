@@ -1,4 +1,4 @@
-import { CustomError, ApolloResolver } from '../../../../types';
+import { CustomError, ApolloResolver } from '../../../types';
 import { UserClient, UserDocument } from '../User';
 import { getUserByContext } from '../helpers';
 import { DataBaseError } from '../../../Errors';

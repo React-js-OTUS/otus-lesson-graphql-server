@@ -1,4 +1,4 @@
-import { AccountResponse, ApolloResolver } from '../../../../types';
+import { AccountResponse, ApolloResolver } from '../../../types';
 import { UserDocument, UserModel } from '../User';
 import { IncorrectPasswordOrEmailError } from '../../../Errors';
 import { getTokenByParams } from '../../../utils/helpers';

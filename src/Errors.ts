@@ -1,6 +1,6 @@
 import { GraphQLError, Source } from 'graphql';
 import { ASTNode } from 'graphql/language/ast';
-import { Messages } from '../types';
+import { Messages } from './types';
 
 export class ApolloError extends Error implements GraphQLError {
   public extensions: Record<string, unknown>;

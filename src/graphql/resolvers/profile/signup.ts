@@ -1,4 +1,4 @@
-import { Messages, ApolloResolver } from '../../../../types';
+import { Messages, ApolloResolver } from '../../../types';
 import { ProfileMutations, ProfileMutationsSignupArgs } from '../../../graphql.types';
 import { UserDocument, UserModel } from '../../../models/User';
 import { getTokenByParams } from '../../../utils/helpers';

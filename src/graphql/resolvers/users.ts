@@ -1,4 +1,4 @@
-import { ApolloResolver } from '../../../types';
+import { ApolloResolver } from '../../types';
 import { User } from '../../graphql.types';
 import { withAuth } from '../auth';
 import { getOnlineUsers } from '../onlineUsers';

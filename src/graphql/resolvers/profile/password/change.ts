@@ -1,4 +1,4 @@
-import { Messages, ApolloResolver } from '../../../../../types';
+import { Messages, ApolloResolver } from '../../../../types';
 import { ProfilePasswordMutationsChangeArgs } from '../../../../graphql.types';
 import { isValidPassword } from '../../../../models/User/helpers';
 import { ResetPassword } from '../../../../graphql.types';

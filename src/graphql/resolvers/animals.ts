@@ -1,4 +1,4 @@
-import { ApolloResolver } from '../../../types';
+import { ApolloResolver } from '../../types';
 import { withAuth } from '../auth';
 import { AnimalDocument, AnimalModel } from '../../models/Animal';
 

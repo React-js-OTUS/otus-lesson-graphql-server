@@ -1,4 +1,4 @@
-import { AccountResponse, Messages, ApolloResolver } from '../../types';
+import { AccountResponse, Messages, ApolloResolver } from '../types';
 import { GraphQLError } from 'graphql/index';
 
 export const withAuth =

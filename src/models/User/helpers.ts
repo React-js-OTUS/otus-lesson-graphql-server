@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { ApolloContext } from '../../../types';
+import { ApolloContext } from '../../types';
 import { UserDocument } from './User';
 import { getUserByToken } from '../../utils/helpers';
 

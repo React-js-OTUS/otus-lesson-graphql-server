@@ -1,5 +1,5 @@
-import { Profile } from '../src/graphql.types';
-import { UserMain, UserDocument } from '../src/models/User';
+import { Profile } from '../graphql.types';
+import { UserMain, UserDocument } from '../models/User';
 
 export enum Messages {
   INCORRECT_EMAIL_OR_PASSWORD = 'ERR_INCORRECT_EMAIL_OR_PASSWORD',

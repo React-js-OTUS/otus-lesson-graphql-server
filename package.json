@@ -6,9 +6,20 @@
   "author": "Igor Zvyagin <spirit-drive@yandex.ru>",
   "license": "MIT",
   "scripts": {
+    "lint": "eslint --fix src",
+    "test": "jest src",
+    "build": "tsc --project tsconfig.json",
     "dev": "ts-node-dev src/app.ts",
-    "lint": "eslint src --fix",
-    "schemagen": "graphql-codegen && ts-node enhance.graphql.types.ts"
+    "dev:server": "cross-env PORT=80 MODE=production node build/app.js",
+    "stop": "pm2 stop app",
+    "start:stage": "pm2 start ecosystem.config.js --env stage",
+    "start": "pm2 start ecosystem.config.js --env production",
+    "restart": "yarn stop && yarn start",
+    "schemagen": "graphql-codegen && ts-node enhance.graphql.types.ts",
+    "db:start": "brew services start mongodb-community@5.0",
+    "db:stop": "brew services stop mongodb-community@5.0",
+    "db:start:prod": "sudo systemctl start mongod",
+    "db:stop:prod": "sudo systemctl stop mongod"
   },
   "dependencies": {
     "@apollo/server": "^4.9.3",

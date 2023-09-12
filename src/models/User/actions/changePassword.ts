@@ -1,4 +1,4 @@
-import { CustomError, ApolloResolver } from '../../../../types';
+import { CustomError, ApolloResolver } from '../../../types';
 import { getTokenByParams } from '../../../utils/helpers';
 import { DataBaseError, InvalidPasswordError, SamePasswordsError } from '../../../Errors';
 import { getUserByContext, isValidPassword } from '../helpers';

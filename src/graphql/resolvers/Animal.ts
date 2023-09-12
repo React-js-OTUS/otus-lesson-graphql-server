@@ -1,4 +1,4 @@
-import { ApolloResolver } from '../../../types';
+import { ApolloResolver } from '../../types';
 import { User, Disease } from '../../graphql.types';
 import { UserModel } from '../../models/User';
 import { DiseaseModel } from '../../models/Disease';

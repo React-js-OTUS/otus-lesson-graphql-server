@@ -1,4 +1,4 @@
-import { AccountResponseRaw, CustomError, ApolloResolver } from '../../../../types';
+import { AccountResponseRaw, CustomError, ApolloResolver } from '../../../types';
 import { getTokenByParams } from '../../../utils/helpers';
 import { DataBaseError, InvalidPasswordError, InvalidResetPasswordError } from '../../../Errors';
 import {

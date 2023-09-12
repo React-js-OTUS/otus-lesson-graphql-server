@@ -1,4 +1,4 @@
-import { Messages, ApolloResolver } from '../../../../types';
+import { Messages, ApolloResolver } from '../../../types';
 import { ProfileMutations, ProfileMutationsUpdateArgs } from '../../../graphql.types';
 import { prepareProfile } from '../../../models/helpers/prepareProfile';
 import { GraphQLError } from 'graphql/index';
