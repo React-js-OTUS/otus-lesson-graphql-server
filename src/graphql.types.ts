@@ -7,15 +7,17 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
-  Date: { input: any; output: any };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  Date: { input: any; output: any; }
 };
 
-export type AddAnimalInput = {
+export type Animal = Bird | Cat | Dog;
+
+export type AnimalInput = {
   age?: InputMaybe<Scalars['String']['input']>;
   comment?: InputMaybe<Scalars['String']['input']>;
   diseaseIds?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -23,12 +25,10 @@ export type AddAnimalInput = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type Animal = Bird | Cat | Dog;
-
 export enum AnimalType {
   Bird = 'bird',
   Cat = 'cat',
-  Dog = 'dog',
+  Dog = 'dog'
 }
 
 export type AuthResult = {
@@ -81,7 +81,7 @@ export enum DiseaseType {
   Broken = 'broken',
   Cold = 'cold',
   Parasites = 'parasites',
-  Stomach = 'stomach',
+  Stomach = 'stomach'
 }
 
 export type Dog = {
@@ -110,16 +110,45 @@ export type MedicineInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addAnimal: Animal;
+  addDisease: Disease;
+  addMedicine: Medicine;
   profile?: Maybe<ProfileMutations>;
   updateAnimal: Animal;
+  updateDisease: Disease;
+  updateMedicine: Medicine;
 };
+
 
 export type MutationAddAnimalArgs = {
-  input?: InputMaybe<AddAnimalInput>;
+  input: AnimalInput;
 };
 
+
+export type MutationAddDiseaseArgs = {
+  input: DiseaseInput;
+};
+
+
+export type MutationAddMedicineArgs = {
+  input: MedicineInput;
+};
+
+
 export type MutationUpdateAnimalArgs = {
-  input?: InputMaybe<UpdateAnimalInput>;
+  id: Scalars['ID']['input'];
+  input: AnimalInput;
+};
+
+
+export type MutationUpdateDiseaseArgs = {
+  id: Scalars['ID']['input'];
+  input: DiseaseInput;
+};
+
+
+export type MutationUpdateMedicineArgs = {
+  id: Scalars['ID']['input'];
+  input: MedicineInput;
 };
 
 export type Profile = {
@@ -138,15 +167,18 @@ export type ProfileMutations = {
   update: Profile;
 };
 
+
 export type ProfileMutationsSigninArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
+
 export type ProfileMutationsSignupArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
+
 
 export type ProfileMutationsUpdateArgs = {
   input: UpdateProfileInput;
@@ -157,6 +189,7 @@ export type ProfilePasswordMutations = {
   change: ResetPassword;
 };
 
+
 export type ProfilePasswordMutationsChangeArgs = {
   input: ChangePasswordInput;
 };
@@ -164,6 +197,8 @@ export type ProfilePasswordMutationsChangeArgs = {
 export type Query = {
   __typename?: 'Query';
   animals: Array<Animal>;
+  diseases: Array<Disease>;
+  medicines: Array<Medicine>;
   profile?: Maybe<Profile>;
   users: Array<User>;
 };
@@ -176,16 +211,9 @@ export type ResetPassword = {
 export type Subscription = {
   __typename?: 'Subscription';
   updatedAnimal: Animal;
+  updatedDisease: Disease;
+  updatedMedicine: Medicine;
   updatedUser: User;
-};
-
-export type UpdateAnimalInput = {
-  age?: InputMaybe<Scalars['String']['input']>;
-  comment?: InputMaybe<Scalars['String']['input']>;
-  diseaseIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  doctorId?: InputMaybe<Scalars['ID']['input']>;
-  id: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateProfileInput = {
