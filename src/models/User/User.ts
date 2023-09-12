@@ -74,7 +74,7 @@ const methods: UserMethods = {
 Object.assign(UserSchema.methods, methods);
 
 UserSchema.post('save', (doc) => {
-  pubsub.publish(pubsubKeys.updatedUser, prepareUser(doc));
+  pubsub.publish(pubsubKeys.updatedUser, { updatedUser: prepareUser(doc) });
 });
 
 export const UserModel = mongoose.model('User', UserSchema);

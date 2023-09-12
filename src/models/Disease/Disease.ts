@@ -12,6 +12,6 @@ export const DiseaseSchema = new mongoose.Schema<DiseaseDocument>({
   type: DiseaseTypeField,
 });
 
-DiseaseSchema.post('save', (doc) => pubsub.publish(pubsubKeys.updatedDisease, doc));
+DiseaseSchema.post('save', (updatedDisease) => pubsub.publish(pubsubKeys.updatedDisease, { updatedDisease }));
 
 export const DiseaseModel = mongoose.model('Disease', DiseaseSchema);

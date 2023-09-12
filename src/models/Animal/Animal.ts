@@ -25,6 +25,6 @@ export const AnimalSchema = new mongoose.Schema<AnimalDocument>({
   },
 });
 
-AnimalSchema.post('save', (doc) => pubsub.publish(pubsubKeys.updatedAnimal, doc));
+AnimalSchema.post('save', (updatedAnimal) => pubsub.publish(pubsubKeys.updatedAnimal, { updatedAnimal }));
 
 export const AnimalModel = mongoose.model('Animal', AnimalSchema);

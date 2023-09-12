@@ -11,6 +11,6 @@ export const MedicineSchema = new mongoose.Schema<MedicineDocument>({
   heal: [DiseaseTypeField],
 });
 
-MedicineSchema.post('save', (doc) => pubsub.publish(pubsubKeys.updatedMedicine, doc));
+MedicineSchema.post('save', (updatedMedicine) => pubsub.publish(pubsubKeys.updatedMedicine, { updatedMedicine }));
 
 export const MedicineModel = mongoose.model('Medicine', MedicineSchema);
