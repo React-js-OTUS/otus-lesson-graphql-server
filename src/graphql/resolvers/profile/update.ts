@@ -1,37 +1,35 @@
-import { ResolverWithoutParent } from '../../../../types';
+import { Messages, ResolverWithoutParent } from '../../../../types';
 import { ProfileMutations, ProfileMutationsUpdateArgs } from '../../../graphql.types';
-import { getParamsFromToken } from '../../../utils/helpers';
-import { DataBaseError, InvalidNickNameError, JWTError } from '../../../Errors';
-import { UserDocument, UserModel } from '../../../models/User';
-import { AccountJWTParams } from '../../account';
 import { prepareProfile } from '../../../models/helpers/prepareProfile';
+import { GraphQLError } from 'graphql/index';
 
-export const update: ResolverWithoutParent<ProfileMutationsUpdateArgs, ProfileMutations['update'] | Error> = async (
-  _,
-  { input },
-  { token }
-) => {
-  let id: string;
-  try {
-    const res = await getParamsFromToken<AccountJWTParams>(token);
-    id = res.id;
-  } catch (e) {
-    return new JWTError('invalid token');
-  }
-  let user;
-  try {
-    user = (await UserModel.findById(id)) as UserDocument;
-  } catch (e) {
-    return new DataBaseError(e);
-  }
-
+export const update: ResolverWithoutParent<
+  ProfileMutationsUpdateArgs,
+  ProfileMutations['update'] | GraphQLError
+> = async (_, { input }, { user }) => {
   try {
     const { name } = input;
     user.name = name;
-    await user.save();
 
+    // Выполняем валидацию перед сохранением
+    const validationError = user.validateSync();
+    if (validationError) {
+      // Если есть ошибки валидации, отправляем ValidationError
+      return new GraphQLError(validationError.message, {
+        extensions: {
+          code: Messages.INVALID_NICKNAME,
+          http: { status: 400 },
+        },
+      });
+    }
+    // Если валидация успешна, сохраняем документ
+    await user.save();
     return prepareProfile(user);
   } catch (e) {
-    return new InvalidNickNameError(e);
+    return new GraphQLError(e.message, {
+      extensions: {
+        code: Messages.DATA_BASE_ERROR,
+      },
+    });
   }
 };

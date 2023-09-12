@@ -8,7 +8,7 @@ import * as mongoose from 'mongoose';
 import { expressMiddleware } from '@apollo/server/express4';
 import { BaseContext } from '@apollo/server/src/externalTypes';
 import { createServer } from './graphql/server';
-import * as path from "path";
+import * as path from 'path';
 
 (async () => {
   const app = express();
@@ -30,7 +30,6 @@ import * as path from "path";
   const root = path.join(process.cwd(), 'dist');
   app.use(express.static(root));
   app.get('*', (_, res) => res.sendFile('index.html', { root }));
-
 
   httpServer.listen(() => console.log(`🚀 Server ready at ${url}`));
 })();

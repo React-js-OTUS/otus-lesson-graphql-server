@@ -1,12 +1,16 @@
 import { ApolloServer } from '@apollo/server';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
+import { GraphQLError } from 'graphql';
 import * as http from 'http';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
+import { getParamsFromToken } from '../utils/helpers';
+import { AccountJWTParams } from './account';
+import { UserDocument, UserModel } from '../models/User';
 
 export const AUTHENTICATION_TYPE = 'Bearer';
 const regexpForRemoveAuthenticationType = new RegExp(`^${AUTHENTICATION_TYPE}\\s`);
@@ -46,11 +50,29 @@ export const createServer = async (httpServer: http.Server, port: number) => {
 
   const { url } = await startStandaloneServer(server, {
     context: async ({ req }) => {
-      // Get the user token from the headers.
-      const { authorization } = (req.headers || {}) as { authorization: string; locale: string };
-      const token = getToken(authorization);
-
-      return { token };
+      try {
+        const { authorization } = (req.headers || {}) as { authorization: string; locale: string };
+        const token = getToken(authorization);
+        const res = await getParamsFromToken<AccountJWTParams>(token);
+        const id = res.id;
+        const user = (await UserModel.findById(id)) as UserDocument;
+        if (!user) {
+          throw new GraphQLError('User is not authenticated', {
+            extensions: {
+              code: 'ERR_JWT_ERROR',
+              http: { status: 401 },
+            },
+          });
+        }
+        return { token, user };
+      } catch (e) {
+        throw new GraphQLError(e.message, {
+          extensions: {
+            code: 'ERR_JWT_ERROR',
+            http: { status: 401 },
+          },
+        });
+      }
     },
     listen: {
       port,

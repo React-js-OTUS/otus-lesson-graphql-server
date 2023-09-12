@@ -1,8 +1,8 @@
-import { AccountResponse, ResolverWithoutParent } from '../../../../types';
+import { AccountResponse, Messages, ResolverWithoutParent } from '../../../../types';
 import { UserDocument, UserModel } from '../../../models/User';
 import { ProfileMutations, ProfileMutationsSigninArgs } from '../../../graphql.types';
-import { DataBaseError, IncorrectPasswordOrEmailError } from '../../../Errors';
 import { getTokenByParams } from '../../../utils/helpers';
+import { GraphQLError } from 'graphql/index';
 
 export const signin: ResolverWithoutParent<ProfileMutationsSigninArgs, ProfileMutations['signin'] | Error> = async (
   _,
@@ -13,10 +13,19 @@ export const signin: ResolverWithoutParent<ProfileMutationsSigninArgs, ProfileMu
   try {
     user = (await UserModel.findOne({ email })) as UserDocument;
   } catch (e) {
-    return new DataBaseError(e);
+    return new GraphQLError(e.message, {
+      extensions: {
+        code: Messages.DATA_BASE_ERROR,
+      },
+    });
   }
   if (!user || !user.isRightPassword(password)) {
-    return new IncorrectPasswordOrEmailError('User not found or invalid password');
+    return new GraphQLError('User not found or invalid password', {
+      extensions: {
+        code: Messages.INCORRECT_EMAIL_OR_PASSWORD,
+        http: { status: 400 },
+      },
+    });
   }
 
   const token = getTokenByParams({ id: user._id });

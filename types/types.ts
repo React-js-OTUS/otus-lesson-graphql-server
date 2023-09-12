@@ -1,4 +1,5 @@
-import { UserMain } from '../src/models/User';
+import { Profile } from '../src/graphql.types';
+import { UserMain, UserDocument } from '../src/models/User';
 
 export enum Messages {
   INCORRECT_EMAIL_OR_PASSWORD = 'ERR_INCORRECT_EMAIL_OR_PASSWORD',
@@ -29,6 +30,7 @@ export type AccountResponse = AccountResponseRaw | CustomError;
 
 export type ApolloContext = {
   token: string;
+  user: Profile & UserDocument;
 };
 
 export type ResolverWithoutParent<Args extends Record<string, unknown>, Res = AccountResponse> = (

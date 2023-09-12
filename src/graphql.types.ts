@@ -7,17 +7,55 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  Date: { input: any; output: any };
 };
+
+export type AddAnimalInput = {
+  age?: InputMaybe<Scalars['String']['input']>;
+  comment?: InputMaybe<Scalars['String']['input']>;
+  diseaseIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  doctorId?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type Animal = Bird | Cat | Dog;
+
+export enum AnimalType {
+  Bird = 'bird',
+  Cat = 'cat',
+  Dog = 'dog',
+}
 
 export type AuthResult = {
   __typename?: 'AuthResult';
   token: Scalars['String']['output'];
+};
+
+export type Bird = {
+  __typename?: 'Bird';
+  age?: Maybe<Scalars['String']['output']>;
+  comment?: Maybe<Scalars['String']['output']>;
+  disease: Array<Maybe<Disease>>;
+  doctor: User;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['Date']['output']>;
+};
+
+export type Cat = {
+  __typename?: 'Cat';
+  age?: Maybe<Scalars['String']['output']>;
+  comment?: Maybe<Scalars['String']['output']>;
+  disease: Array<Maybe<Disease>>;
+  doctor: User;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['Date']['output']>;
 };
 
 export type ChangePasswordInput = {
@@ -25,9 +63,63 @@ export type ChangePasswordInput = {
   password: Scalars['String']['input'];
 };
 
+export type Disease = {
+  __typename?: 'Disease';
+  desc: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  type: DiseaseType;
+};
+
+export type DiseaseInput = {
+  desc: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  type: DiseaseType;
+};
+
+export enum DiseaseType {
+  Broken = 'broken',
+  Cold = 'cold',
+  Parasites = 'parasites',
+  Stomach = 'stomach',
+}
+
+export type Dog = {
+  __typename?: 'Dog';
+  age?: Maybe<Scalars['String']['output']>;
+  comment?: Maybe<Scalars['String']['output']>;
+  disease: Array<Maybe<Disease>>;
+  doctor: User;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['Date']['output']>;
+};
+
+export type Medicine = {
+  __typename?: 'Medicine';
+  heal: Array<DiseaseType>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type MedicineInput = {
+  heal: Array<DiseaseType>;
+  name: Scalars['String']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  addAnimal: Animal;
   profile?: Maybe<ProfileMutations>;
+  updateAnimal: Animal;
+};
+
+export type MutationAddAnimalArgs = {
+  input?: InputMaybe<AddAnimalInput>;
+};
+
+export type MutationUpdateAnimalArgs = {
+  input?: InputMaybe<UpdateAnimalInput>;
 };
 
 export type Profile = {
@@ -46,18 +138,15 @@ export type ProfileMutations = {
   update: Profile;
 };
 
-
 export type ProfileMutationsSigninArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
-
 export type ProfileMutationsSignupArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
-
 
 export type ProfileMutationsUpdateArgs = {
   input: UpdateProfileInput;
@@ -68,19 +157,35 @@ export type ProfilePasswordMutations = {
   change: ResetPassword;
 };
 
-
 export type ProfilePasswordMutationsChangeArgs = {
   input: ChangePasswordInput;
 };
 
 export type Query = {
   __typename?: 'Query';
+  animals: Array<Animal>;
   profile?: Maybe<Profile>;
+  users: Array<User>;
 };
 
 export type ResetPassword = {
   __typename?: 'ResetPassword';
   success: Scalars['Boolean']['output'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  updatedAnimal: Animal;
+  updatedUser: User;
+};
+
+export type UpdateAnimalInput = {
+  age?: InputMaybe<Scalars['String']['input']>;
+  comment?: InputMaybe<Scalars['String']['input']>;
+  diseaseIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  doctorId?: InputMaybe<Scalars['ID']['input']>;
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateProfileInput = {

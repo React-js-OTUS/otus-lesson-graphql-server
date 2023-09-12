@@ -1,8 +1,8 @@
-import { ResolverWithoutParent } from '../../../../types';
+import { Messages, ResolverWithoutParent } from '../../../../types';
 import { ProfileMutations, ProfileMutationsSignupArgs } from '../../../graphql.types';
 import { UserDocument, UserModel } from '../../../models/User';
-import { AccountAlreadyExistError, DataBaseError } from '../../../Errors';
 import { getTokenByParams } from '../../../utils/helpers';
+import { GraphQLError } from 'graphql/index';
 
 export const signup: ResolverWithoutParent<ProfileMutationsSignupArgs, ProfileMutations['signup'] | Error> = async (
   _,
@@ -14,10 +14,19 @@ export const signup: ResolverWithoutParent<ProfileMutationsSignupArgs, ProfileMu
   try {
     foundUsers = (await UserModel.findOne({ email })) as UserDocument;
   } catch (e) {
-    return new DataBaseError(e);
+    return new GraphQLError(e.message, {
+      extensions: {
+        code: Messages.DATA_BASE_ERROR,
+      },
+    });
   }
   if (foundUsers) {
-    return new AccountAlreadyExistError(`User with email: ${foundUsers.email} already exist`);
+    return new GraphQLError(`User with email: ${foundUsers.email} already exist`, {
+      extensions: {
+        code: Messages.ACCOUNT_ALREADY_EXIST,
+        http: { code: 400 },
+      },
+    });
   }
   const user = new UserModel() as UserDocument;
   user.email = email;
@@ -26,7 +35,11 @@ export const signup: ResolverWithoutParent<ProfileMutationsSignupArgs, ProfileMu
   try {
     await user.save();
   } catch (e) {
-    return new DataBaseError(e);
+    return new GraphQLError(e.message, {
+      extensions: {
+        code: Messages.DATA_BASE_ERROR,
+      },
+    });
   }
 
   const token = getTokenByParams({ id: user._id });
