@@ -7,4 +7,9 @@ export const pubsubKeys = {
   updatedUser: 'updatedUser',
   updatedMedicine: 'updatedMedicine',
   updatedDisease: 'updatedDisease',
+
+  removedAnimal: 'removedAnimal',
+  removedUser: 'removedUser',
+  removedMedicine: 'removedMedicine',
+  removedDisease: 'removedDisease',
 };

@@ -133,6 +133,10 @@ export const typeDefs = `#graphql
     updatedUser: User!
     updatedMedicine: Medicine!
     updatedDisease: Disease!
+    removedAnimal: Animal!
+    removedUser: User!
+    removedMedicine: Medicine!
+    removedDisease: Disease!
   }
 
   type Mutation {

@@ -12,5 +12,11 @@ export const MedicineSchema = new mongoose.Schema<MedicineDocument>({
 });
 
 MedicineSchema.post('save', (updatedMedicine) => pubsub.publish(pubsubKeys.updatedMedicine, { updatedMedicine }));
+const removeHook = (removedMedicine: MedicineDocument) =>
+  pubsub.publish(pubsubKeys.removedMedicine, { removedMedicine });
+
+MedicineSchema.post('deleteOne', removeHook);
+MedicineSchema.post('findOneAndDelete', removeHook);
+MedicineSchema.post('findOneAndRemove', removeHook);
 
 export const MedicineModel = mongoose.model('Medicine', MedicineSchema);

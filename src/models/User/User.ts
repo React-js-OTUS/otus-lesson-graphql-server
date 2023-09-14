@@ -5,7 +5,7 @@ import { ResetPassword } from './ResetPassword';
 import { Profile } from '../../graphql.types';
 import { pubsub, pubsubKeys } from '../../graphql/pubsub';
 import { prepareUser } from '../helpers/prepareUser';
-import { addOnlineUser } from '../../graphql/onlineUsers';
+import { addOnlineUser, removeOnlineUser } from '../../graphql/onlineUsers';
 
 export type ResetPassword = {
   code: string;
@@ -78,5 +78,16 @@ UserSchema.post('save', (doc) => {
   addOnlineUser(doc);
   pubsub.publish(pubsubKeys.updatedUser, { updatedUser: prepareUser(doc) });
 });
+
+const removeHook = (doc: UserDocument) => {
+  removeOnlineUser(doc);
+  pubsub.publish(pubsubKeys.removedUser, { removedUser: prepareUser(doc) });
+};
+
+UserSchema.post('deleteOne', removeHook);
+
+UserSchema.post('findOneAndRemove', removeHook);
+
+UserSchema.post('findOneAndDelete', removeHook);
 
 export const UserModel = mongoose.model('User', UserSchema);

@@ -211,6 +211,10 @@ export type ResetPassword = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  removedAnimal: Animal;
+  removedDisease: Disease;
+  removedMedicine: Medicine;
+  removedUser: User;
   updatedAnimal: Animal;
   updatedDisease: Disease;
   updatedMedicine: Medicine;

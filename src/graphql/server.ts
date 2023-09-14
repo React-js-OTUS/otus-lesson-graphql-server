@@ -9,10 +9,11 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import { getParamsFromToken } from '../utils/helpers';
 import { AccountJWTParams } from './account';
 import { UserDocument, UserModel } from '../models/User';
-import { addOnlineUser, removeOnlineUser } from './onlineUsers';
+import { addOnlineUser, getOnlineUsers, removeOnlineUser } from './onlineUsers';
 import express from 'express';
 import { ApolloContext, Messages } from '../types';
 import { GraphQLError } from 'graphql';
+import { pubsub, pubsubKeys } from './pubsub';
 
 export const AUTHENTICATION_TYPE = 'Bearer';
 const regexpForRemoveAuthenticationType = new RegExp(`^${AUTHENTICATION_TYPE}\\s`);
@@ -60,6 +61,7 @@ export const createServer = async (httpServer: http.Server) => {
         const id = res.id;
         const user = (await UserModel.findById(id)) as UserDocument;
         addOnlineUser(user);
+        await pubsub.publish(pubsubKeys.updatedUser, { updatedUser: user });
       },
       onDisconnect: async (ctx) => {
         const { authorization } = ctx.connectionParams;
@@ -69,6 +71,7 @@ export const createServer = async (httpServer: http.Server) => {
         const id = res.id;
         const user = (await UserModel.findById(id)) as UserDocument;
         removeOnlineUser(user);
+        await pubsub.publish(pubsubKeys.removedUser, { removedUser: user });
       },
     },
     wsServer

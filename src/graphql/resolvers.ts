@@ -50,6 +50,19 @@ export const resolvers = {
     updatedDisease: {
       subscribe: () => pubsub.asyncIterator([pubsubKeys.updatedDisease]),
     },
+
+    removedAnimal: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.removedAnimal]),
+    },
+    removedUser: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.removedUser]),
+    },
+    removedMedicine: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.removedMedicine]),
+    },
+    removedDisease: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.removedDisease]),
+    },
   },
   Query: {
     animals,
