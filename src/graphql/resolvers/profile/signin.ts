@@ -8,10 +8,10 @@ export const signin: ApolloResolver<never, ProfileMutations['signin'] | Error, P
   _,
   args
 ) => {
-  const { password, email } = args;
+  const { password, nickname } = args;
   let user: UserDocument;
   try {
-    user = (await UserModel.findOne({ email })) as UserDocument;
+    user = (await UserModel.findOne({ nickname })) as UserDocument;
   } catch (e) {
     return new GraphQLError(e.message, {
       extensions: {

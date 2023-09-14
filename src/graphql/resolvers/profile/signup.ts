@@ -8,11 +8,11 @@ export const signup: ApolloResolver<never, ProfileMutations['signup'] | Error, P
   _,
   args
 ) => {
-  const { password, email } = args;
+  const { password, nickname } = args;
 
   let foundUsers;
   try {
-    foundUsers = (await UserModel.findOne({ email })) as UserDocument;
+    foundUsers = (await UserModel.findOne({ nickname })) as UserDocument;
   } catch (e) {
     return new GraphQLError(e.message, {
       extensions: {
@@ -21,7 +21,7 @@ export const signup: ApolloResolver<never, ProfileMutations['signup'] | Error, P
     });
   }
   if (foundUsers) {
-    return new GraphQLError(`User with email: ${foundUsers.email} already exist`, {
+    return new GraphQLError(`User with email: ${foundUsers.nickname} already exist`, {
       extensions: {
         code: Messages.ACCOUNT_ALREADY_EXIST,
         http: { code: 400 },
@@ -29,7 +29,7 @@ export const signup: ApolloResolver<never, ProfileMutations['signup'] | Error, P
     });
   }
   const user = new UserModel() as UserDocument;
-  user.email = email;
+  user.nickname = nickname;
   user.password = await user.generateHash(password);
 
   try {

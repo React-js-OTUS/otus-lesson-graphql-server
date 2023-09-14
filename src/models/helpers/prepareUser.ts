@@ -4,7 +4,7 @@ import { User } from '../../graphql.types';
 export const prepareUser = (item: UserDocument): User =>
   item && {
     id: item._id,
-    name: item.name,
+    nickname: item.nickname,
     signUpDate: item.signUpDate,
   };
 

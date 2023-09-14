@@ -1,23 +1,16 @@
 import * as mongoose from 'mongoose';
 import { Document, Model } from 'mongoose';
-import { generateHash, isValidCode, isValidEmail, isValidNickname } from './helpers';
-import { ResetPassword } from './ResetPassword';
+import { generateHash, isValidCode, isValidNickname } from './helpers';
 import { Profile } from '../../graphql.types';
 import { pubsub, pubsubKeys } from '../../graphql/pubsub';
 import { prepareUser } from '../helpers/prepareUser';
 import { addOnlineUser, removeOnlineUser } from '../../graphql/onlineUsers';
 
-export type ResetPassword = {
-  code: string;
-  deadline: number;
-};
-
 export type UserMain = Profile & {
   password: string;
-  resetPassword: ResetPassword;
 };
 
-export type UserClient = Pick<UserMain, 'name'>;
+export type UserClient = Pick<UserMain, 'nickname'>;
 
 export type UserMethods = {
   generateHash: (password: string) => Promise<string>;
@@ -31,20 +24,13 @@ export type UserDocument = Document & UserNative;
 export type UserType = Model<UserDocument>;
 
 export const UserSchema = new mongoose.Schema<UserDocument>({
-  name: {
+  nickname: {
     type: String,
+    unique: true,
+    required: true,
     validate: {
       validator: isValidNickname,
       message: (props): string => `"${props.value}" is not valid nickname`,
-    },
-  },
-  email: {
-    unique: true,
-    required: true,
-    type: String,
-    validate: {
-      validator: isValidEmail,
-      message: (props): string => `"${props.value}" is not valid email`,
     },
   },
   password: {
@@ -55,13 +41,6 @@ export const UserSchema = new mongoose.Schema<UserDocument>({
     required: true,
     type: Date,
     default: () => new Date(),
-  },
-  resetPassword: {
-    type: ResetPassword,
-    default: {
-      code: null,
-      deadline: null,
-    },
   },
 });
 

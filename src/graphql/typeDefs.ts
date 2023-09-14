@@ -3,14 +3,13 @@ export const typeDefs = `#graphql
 
   type User {
     id: ID!
-    name: String
+    nickname: String!
     signUpDate: Date!
   }
 
   type Profile {
     id: ID!
-    name: String
-    email: String!
+    nickname: String!
     signUpDate: Date!
   }
 
@@ -98,7 +97,7 @@ export const typeDefs = `#graphql
   }
 
   input UpdateProfileInput {
-    name: String!
+    nickname: String!
   }
 
   type AuthResult {
@@ -114,8 +113,8 @@ export const typeDefs = `#graphql
   }
 
   type ProfileMutations {
-    signup(email: String!, password: String!): AuthResult!
-    signin(email: String!, password: String!): AuthResult!
+    signup(nickname: String!, password: String!): AuthResult!
+    signin(nickname: String!, password: String!): AuthResult!
     update(input: UpdateProfileInput!): Profile!
     password: ProfilePasswordMutations
   }

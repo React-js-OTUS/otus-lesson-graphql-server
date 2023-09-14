@@ -9,10 +9,9 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import { getParamsFromToken } from '../utils/helpers';
 import { AccountJWTParams } from './account';
 import { UserDocument, UserModel } from '../models/User';
-import { addOnlineUser, getOnlineUsers, removeOnlineUser } from './onlineUsers';
+import { addOnlineUser, removeOnlineUser } from './onlineUsers';
 import express from 'express';
-import { ApolloContext, Messages } from '../types';
-import { GraphQLError } from 'graphql';
+import { ApolloContext } from '../types';
 import { pubsub, pubsubKeys } from './pubsub';
 
 export const AUTHENTICATION_TYPE = 'Bearer';
@@ -49,19 +48,12 @@ export const createServer = async (httpServer: http.Server) => {
       onConnect: async (ctx) => {
         const { authorization } = ctx.connectionParams;
         const token = getToken(authorization as string);
-        if (!token) {
-          throw new GraphQLError('token is required', {
-            extensions: {
-              code: Messages.JWT_ERROR,
-              http: { status: 401 },
-            },
-          });
-        }
+        if (!token) return;
         const res = await getParamsFromToken<AccountJWTParams>(token);
         const id = res.id;
         const user = (await UserModel.findById(id)) as UserDocument;
         addOnlineUser(user);
-        await pubsub.publish(pubsubKeys.updatedUser, { updatedUser: user });
+        pubsub.publish(pubsubKeys.updatedUser, { updatedUser: user });
       },
       onDisconnect: async (ctx) => {
         const { authorization } = ctx.connectionParams;

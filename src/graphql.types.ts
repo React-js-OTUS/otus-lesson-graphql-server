@@ -154,9 +154,8 @@ export type MutationUpdateMedicineArgs = {
 
 export type Profile = {
   __typename?: 'Profile';
-  email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  nickname: Scalars['String']['output'];
   signUpDate: Scalars['Date']['output'];
 };
 
@@ -170,13 +169,13 @@ export type ProfileMutations = {
 
 
 export type ProfileMutationsSigninArgs = {
-  email: Scalars['String']['input'];
+  nickname: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
 
 export type ProfileMutationsSignupArgs = {
-  email: Scalars['String']['input'];
+  nickname: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
@@ -222,12 +221,12 @@ export type Subscription = {
 };
 
 export type UpdateProfileInput = {
-  name: Scalars['String']['input'];
+  nickname: Scalars['String']['input'];
 };
 
 export type User = {
   __typename?: 'User';
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  nickname: Scalars['String']['output'];
   signUpDate: Scalars['Date']['output'];
 };
