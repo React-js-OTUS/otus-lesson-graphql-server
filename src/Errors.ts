@@ -69,7 +69,7 @@ export class DuplicateValueOfFieldError extends ApolloError {
   constructor(error: Error, properties?: Record<string, unknown>) {
     super(error as unknown as string, Messages.DUPLICATE_VALUE_OF_FIELD, properties);
 
-    const [, field, value] = error.message.match(/{\s(\w+):\s"(\w+)"\s}/) || [];
+    const [, field, value] = error.message?.match(/{\s(\w+):\s"(\w+)"\s}/) || [];
 
     Object.defineProperty(this, 'name', { value: 'DuplicateValueOfFieldError' });
     this.extensions = {
