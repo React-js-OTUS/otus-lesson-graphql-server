@@ -28,6 +28,7 @@ export const options = {
       const res = await getParamsFromToken<AccountJWTParams>(token);
       const id = res.id;
       const user = (await UserModel.findById(id)) as UserDocument;
+      addOnlineUser(user);
       return { token, user };
     } catch (e) {
       return { token: null, user: null };

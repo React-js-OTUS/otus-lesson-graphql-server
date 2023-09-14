@@ -4,9 +4,6 @@ import { withAuth } from '../auth';
 import { getOnlineUsers } from '../onlineUsers';
 import { prepareUsers } from '../../models/helpers/prepareUser';
 
-export const usersRaw: ApolloResolver<never, User[] | Error> = async () => {
-  console.log('users');
-  return prepareUsers(getOnlineUsers());
-};
+export const usersRaw: ApolloResolver<never, User[] | Error> = async () => prepareUsers(getOnlineUsers());
 
 export const users = withAuth(usersRaw);
