@@ -29,14 +29,14 @@ export const typeDefs = `#graphql
   input DiseaseInput { 
     type: DiseaseType!
     name: String!
-    desc: String!
+    desc: String
   }
 
   type Disease { 
     id: ID!
     type: DiseaseType!
     name: String!
-    desc: String!
+    desc: String
   }
 
   input MedicineInput {
@@ -82,13 +82,22 @@ export const typeDefs = `#graphql
 
   union Animal = Bird | Dog | Cat
 
-  input AnimalInput {
+  input AnimalAddInput {
     doctorId: ID
     diseaseIds: [ID!]
     name: String!
     comment: String
     age: Int
     type: AnimalType!
+  }
+
+  input AnimalUpdateInput {
+    doctorId: ID
+    diseaseIds: [ID!]
+    name: String
+    comment: String
+    age: Int
+    type: AnimalType
   }
 
   input ChangePasswordInput {
@@ -140,8 +149,8 @@ export const typeDefs = `#graphql
 
   type Mutation {
     profile: ProfileMutations
-    addAnimal(input: AnimalInput!): Animal!
-    updateAnimal(id: ID!, input: AnimalInput!): Animal!
+    addAnimal(input: AnimalAddInput!): Animal!
+    updateAnimal(id: ID!, input: AnimalUpdateInput!, partial: Boolean): Animal!
     addMedicine(input: MedicineInput!): Medicine!
     updateMedicine(id: ID!, input: MedicineInput!): Medicine!
     addDisease(input: DiseaseInput!): Disease!

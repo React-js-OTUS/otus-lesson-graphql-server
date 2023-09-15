@@ -7,9 +7,12 @@ import { pubsub, pubsubKeys } from '../../graphql/pubsub';
 export type DiseaseDocument = Document & DiseaseType;
 
 export const DiseaseSchema = new mongoose.Schema<DiseaseDocument>({
-  name: String,
+  name: { type: String, required: true },
   desc: String,
-  type: DiseaseTypeField,
+  type: {
+    required: true,
+    ...DiseaseTypeField,
+  },
 });
 
 DiseaseSchema.post('save', (updatedDisease) => pubsub.publish(pubsubKeys.updatedDisease, { updatedDisease }));

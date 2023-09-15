@@ -14,11 +14,14 @@ export type AnimalDocument = Document & AnimalSchemaType;
 
 export const AnimalSchema = new mongoose.Schema<AnimalDocument>({
   age: Number,
-  name: String,
+  name: { type: String, required: true },
   comment: String,
   doctorId: String,
   diseaseIds: [String],
-  type: AnimalTypeField,
+  type: {
+    required: true,
+    ...AnimalTypeField,
+  },
   updatedAt: {
     type: Date,
     default: () => new Date(),
