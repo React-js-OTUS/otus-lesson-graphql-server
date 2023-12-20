@@ -4,7 +4,7 @@ import { generateHash, isValidCode, isValidNickname } from './helpers';
 import { Profile } from '../../graphql.types';
 import { pubsub, pubsubKeys } from '../../graphql/pubsub';
 import { prepareUser } from '../helpers/prepareUser';
-import { addOnlineUser, removeOnlineUser } from '../../graphql/onlineUsers';
+import { addOrUpdateOnlineUser, removeOnlineUser } from '../../graphql/onlineUsers';
 
 export type UserMain = Profile & {
   password: string;
@@ -53,9 +53,7 @@ const methods: UserMethods = {
 
 Object.assign(UserSchema.methods, methods);
 
-UserSchema.post('save', (doc) => {
-  addOnlineUser(doc);
-});
+UserSchema.post('save', (doc) => addOrUpdateOnlineUser(doc));
 
 const removeHook = (doc: UserDocument) => {
   removeOnlineUser(doc);

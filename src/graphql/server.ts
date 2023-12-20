@@ -9,7 +9,7 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import { getParamsFromToken } from '../utils/helpers';
 import { AccountJWTParams } from './account';
 import { UserDocument, UserModel } from '../models/User';
-import { addOnlineUser, removeOnlineUser } from './onlineUsers';
+import { addOrUpdateOnlineUser, removeOnlineUser } from './onlineUsers';
 import express from 'express';
 import { ApolloContext } from '../types';
 import { pubsub, pubsubKeys } from './pubsub';
@@ -28,7 +28,7 @@ export const options = {
       const res = await getParamsFromToken<AccountJWTParams>(token);
       const id = res.id;
       const user = (await UserModel.findById(id)) as UserDocument;
-      addOnlineUser(user);
+      addOrUpdateOnlineUser(user);
       return { token, user };
     } catch (e) {
       return { token: null, user: null };
@@ -53,8 +53,8 @@ export const createServer = async (httpServer: http.Server) => {
         const res = await getParamsFromToken<AccountJWTParams>(token);
         const id = res.id;
         const user = (await UserModel.findById(id)) as UserDocument;
-        addOnlineUser(user);
-        pubsub.publish(pubsubKeys.updatedUser, { updatedUser: user });
+        addOrUpdateOnlineUser(user);
+        pubsub.publish(pubsubKeys.addedUser, { addedUser: user });
       },
       onDisconnect: async (ctx) => {
         const { authorization } = ctx.connectionParams;

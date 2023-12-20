@@ -4,7 +4,7 @@ export const onlineUsers: UserDocument[] = [];
 
 export const getOnlineUsers = (): UserDocument[] => onlineUsers;
 
-export const addOnlineUser = (user: UserDocument) => {
+export const addOrUpdateOnlineUser = (user: UserDocument) => {
   if (!user) return;
   const index = onlineUsers.findIndex((u) => u.id === user.id);
   if (index === -1) {
