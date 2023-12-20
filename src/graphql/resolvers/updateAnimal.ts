@@ -2,6 +2,7 @@ import { ApolloResolver } from '../../types';
 import { withAuth } from '../auth';
 import { AnimalDocument, AnimalModel } from '../../models/Animal';
 import { MutationUpdateAnimalArgs } from '../../graphql.types';
+import { pubsub, pubsubKeys } from '../pubsub';
 
 export const updateAnimalRaw: ApolloResolver<never, AnimalDocument | Error, MutationUpdateAnimalArgs> = async (
   _,
@@ -26,6 +27,8 @@ export const updateAnimalRaw: ApolloResolver<never, AnimalDocument | Error, Muta
   }
 
   await entity.save();
+
+  await pubsub.publish(pubsubKeys.updatedAnimal, { updatedAnimal: entity });
 
   return entity;
 };

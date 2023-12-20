@@ -38,6 +38,19 @@ export const resolvers = {
     updateMedicine,
   },
   Subscription: {
+    addedAnimal: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.addedAnimal]),
+    },
+    addedUser: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.addedUser]),
+    },
+    addedMedicine: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.addedMedicine]),
+    },
+    addedDisease: {
+      subscribe: () => pubsub.asyncIterator([pubsubKeys.addedDisease]),
+    },
+
     updatedAnimal: {
       subscribe: () => pubsub.asyncIterator([pubsubKeys.updatedAnimal]),
     },

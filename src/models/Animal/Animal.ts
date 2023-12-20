@@ -28,7 +28,6 @@ export const AnimalSchema = new mongoose.Schema<AnimalDocument>({
   },
 });
 
-AnimalSchema.post('save', (updatedAnimal) => pubsub.publish(pubsubKeys.updatedAnimal, { updatedAnimal }));
 const removeHook = (removedAnimal: AnimalDocument) => pubsub.publish(pubsubKeys.removedAnimal, { removedAnimal });
 AnimalSchema.post('deleteOne', removeHook);
 AnimalSchema.post('findOneAndDelete', removeHook);

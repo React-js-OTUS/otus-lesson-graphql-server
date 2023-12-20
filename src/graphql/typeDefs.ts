@@ -111,6 +111,7 @@ export const typeDefs = `#graphql
 
   type AuthResult {
     token: String!
+    user: Profile!
   }
 
   type ResetPassword {
@@ -137,6 +138,10 @@ export const typeDefs = `#graphql
   }
 
   type Subscription {
+    addedAnimal: Animal!
+    addedUser: User!
+    addedMedicine: Medicine!
+    addedDisease: Disease!
     updatedAnimal: Animal!
     updatedUser: User!
     updatedMedicine: Medicine!

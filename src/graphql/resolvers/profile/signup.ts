@@ -3,6 +3,8 @@ import { ProfileMutations, ProfileMutationsSignupArgs } from '../../../graphql.t
 import { UserDocument, UserModel } from '../../../models/User';
 import { getTokenByParams } from '../../../utils/helpers';
 import { GraphQLError } from 'graphql/index';
+import { pubsub, pubsubKeys } from '../../pubsub';
+import { prepareUser } from '../../../models/helpers/prepareUser';
 
 export const signup: ApolloResolver<never, ProfileMutations['signup'] | Error, ProfileMutationsSignupArgs> = async (
   _,
@@ -41,6 +43,8 @@ export const signup: ApolloResolver<never, ProfileMutations['signup'] | Error, P
       },
     });
   }
+
+  await pubsub.publish(pubsubKeys.addedUser, { addedUser: prepareUser(user) });
 
   const token = getTokenByParams({ id: user._id });
   return {

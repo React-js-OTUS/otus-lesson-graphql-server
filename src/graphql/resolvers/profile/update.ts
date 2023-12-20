@@ -4,6 +4,8 @@ import { prepareProfile } from '../../../models/helpers/prepareProfile';
 import { GraphQLError } from 'graphql/index';
 import { withAuth } from '../../auth';
 import { DuplicateValueOfFieldError } from '../../../Errors';
+import { pubsub, pubsubKeys } from '../../pubsub';
+import { prepareUser } from '../../../models/helpers/prepareUser';
 
 export const updateRaw: ApolloResolver<
   never,
@@ -27,6 +29,8 @@ export const updateRaw: ApolloResolver<
     }
     // Если валидация успешна, сохраняем документ
     await user.save();
+    await pubsub.publish(pubsubKeys.updatedUser, { updatedUser: prepareUser(user) });
+
     return prepareProfile(user);
   } catch (e) {
     if (e.message?.match(/{\s(\w+):\s"(\w+)"\s}/)) return new DuplicateValueOfFieldError(e.message);

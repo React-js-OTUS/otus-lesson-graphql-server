@@ -2,6 +2,7 @@ import { ApolloResolver } from '../../types';
 import { withAuth } from '../auth';
 import { MedicineDocument, MedicineModel } from '../../models/Medicine';
 import { MutationUpdateMedicineArgs } from '../../graphql.types';
+import { pubsub, pubsubKeys } from '../pubsub';
 
 export const updateMedicineRaw: ApolloResolver<never, MedicineDocument | Error, MutationUpdateMedicineArgs> = async (
   _,
@@ -13,6 +14,8 @@ export const updateMedicineRaw: ApolloResolver<never, MedicineDocument | Error, 
   entity.heal = heal;
 
   await entity.save();
+
+  await pubsub.publish(pubsubKeys.updatedMedicine, { updatedMedicine: entity });
 
   return entity;
 };
