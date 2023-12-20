@@ -6,15 +6,20 @@ import { pubsub, pubsubKeys } from '../../graphql/pubsub';
 import { prepareUser } from '../helpers/prepareUser';
 import { addOnlineUser, removeOnlineUser } from '../../graphql/onlineUsers';
 
+export type UserMain = Profile & {
+  password: string;
+};
+
+export type UserClient = Pick<UserMain, 'nickname'>;
+
 export type UserMethods = {
   generateHash: (password: string) => Promise<string>;
   isRightPassword: (password: string) => boolean;
 };
 
-export type UserDocument = Document &
-  Profile & {
-    password: string;
-  } & UserMethods;
+export type UserNative = UserMain & UserMethods;
+
+export type UserDocument = Document & UserNative;
 
 export type UserType = Model<UserDocument>;
 
